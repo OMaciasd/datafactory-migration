@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schema.management.azure.com/2020-06-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+	  "location": {
+		"type": "string",
+		"defaultValue": "East US",
+		"metadata": {
+		  "description": "The location to deploy the resource."
+		}
+	  }
+	}
+  }

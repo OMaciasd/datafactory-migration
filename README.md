@@ -14,7 +14,7 @@ Este repositorio contiene ejemplos de plantillas ARM, configuraciones de Azure D
 
 - **Diagramas**: Consultar para entender la arquitectura y los flujos de migración.
 
-![Architecture Diagram](./docs/assets/images/diagram.png)
+![Architecture Diagram](./diagrams/assets/images/diagram.png)
 
 - **Plantillas ARM**: Desplegar recursos en Azure utilizando las plantillas.
 - **Pipelines de DevOps**: Configurar y ejecutar pipelines en Azure DevOps para CI/CD.

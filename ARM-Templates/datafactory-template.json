@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schema.management.azure.com/2020-06-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"resources": [
+	  {
+		"type": "Microsoft.DataFactory/factories",
+		"apiVersion": "2018-06-01",
+		"name": "[variables('dataFactoryName')]",
+		"location": "[resourceGroup().location]",
+		"properties": {
+		  "hubName": "[variables('hubName')]"
+		}
+	  }
+	],
+	"variables": {
+	  "dataFactoryName": "myDataFactory",
+	  "hubName": "defaultHub"
+	}
+  }

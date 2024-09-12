@@ -1,0 +1,13 @@
+{
+	"name": "MyDataset",
+	"properties": {
+	  "type": "AzureBlob",
+	  "linkedServiceName": "MyLinkedService",
+	  "typeProperties": {
+		"location": {
+		  "type": "AzureBlobFSLocation",
+		  "container": "mycontainer"
+		}
+	  }
+	}
+  }

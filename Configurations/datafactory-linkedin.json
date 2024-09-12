@@ -1,0 +1,9 @@
+{
+	"name": "LinkedServiceLinkedIn",
+	"properties": {
+	  "type": "LinkedIn",
+	  "typeProperties": {
+		"connectionString": "<your_connection_string>"
+	  }
+	}
+  }
