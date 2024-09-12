@@ -1,0 +1,4 @@
+variables:
+  azureSubscription: 'MyAzureSubscription'
+  resourceGroup: 'MyResourceGroup'
+  location: 'East US'
