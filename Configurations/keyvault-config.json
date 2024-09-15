@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schema.management.azure.com/2019-09-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"resources": [
+	  {
+		"type": "Microsoft.KeyVault/vaults",
+		"apiVersion": "2021-04-01",
+		"name": "myKeyVault",
+		"location": "East US",
+		"properties": {
+		  "sku": {
+			"family": "A",
+			"name": "standard"
+		  },
+		  "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+		  "accessPolicies": []
+		}
+	  }
+	]
+  }
