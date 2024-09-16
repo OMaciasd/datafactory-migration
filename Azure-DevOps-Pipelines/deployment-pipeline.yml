@@ -1,15 +1,41 @@
 trigger:
   branches:
     include:
-    - main
+      - main  # Se activará solo en la rama principal (main)
+
+pool:
+  vmImage: 'ubuntu-latest'
 
 stages:
-- stage: Deploy
+- stage: DeployToProduction
+  displayName: 'Desplegar ADF a Producción'
+  dependsOn:
+    - UnitTests
+    - IntegrationTests
+    - RegressionTests
+    - SecurityTests
+    - LoadTests
   jobs:
-  - job: DeployJob
+  - job: DeployADF
+    displayName: 'Desplegar ADF a Producción'
     steps:
     - task: AzureCLI@2
       inputs:
-        azureSubscription: 'MyAzureSubscription'
-        scriptType: 'bash'
-        scriptPath: 'deploy-arm-template.sh'
+        azureSubscription: 'my-subscription'
+        scriptType: 'ps'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az datafactory pipeline create --resource-group <resource-group> --factory-name <factory-name> --name <pipeline-name>
+      displayName: 'Desplegar Pipeline ADF a Producción'
+
+- stage: Rollback
+  displayName: 'Rollback si el Despliegue Falla'
+  condition: failed()
+  jobs:
+  - job: RollbackDeployment
+    displayName: 'Rollback del Despliegue de ADF'
+    steps:
+    - script: |
+        # Aquí puedes añadir comandos de rollback o revertir cambios
+        az datafactory pipeline create --resource-group <resource-group> --factory-name <factory-name> --name <backup-pipeline-name>
+      displayName: 'Ejecutar Rollback'

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schema.management.azure.com/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2019-05-01",
+      "name": "your-logic-app-name",
+      "location": "East US",
+      "properties": {
+        "definition": {
+          "description": "Definition of your Logic App"
+        },
+        "parameters": {}
+      }
+    }
+  ]
+}

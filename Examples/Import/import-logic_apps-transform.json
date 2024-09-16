@@ -1,0 +1,13 @@
+{
+  "inputs": {
+    "content": "@{body('Get_file_content')}",
+    "headers": [
+      "Column1",
+      "Column2",
+      "Column3"
+    ]
+  },
+  "outputs": {
+    "statusCode": 200
+  }
+}
