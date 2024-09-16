@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schema.management.azure.com/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2021-02-01-preview",
+      "name": "your-sql-server-name",
+      "location": "East US",
+      "properties": {
+        "administratorLogin": "your-admin-login",
+        "administratorLoginPassword": "your-password"
+      }
+    },
+    {
+      "type": "Microsoft.Sql/servers/databases",
+      "apiVersion": "2021-02-01-preview",
+      "name": "your-database-name",
+      "location": "East US",
+      "properties": {
+        "edition": "Standard",
+        "requestedServiceObjectiveName": "S1"
+      }
+    }
+  ]
+}

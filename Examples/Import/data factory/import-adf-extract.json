@@ -1,0 +1,15 @@
+{
+  "method": "POST",
+  "uri": "https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}/createRun?api-version=2018-06-01",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer @{body('Get_access_token')}"
+  },
+  "body": {
+    "referencePipelineRunId": "pipelineRunId",
+    "isRecovery": false,
+    "parameters": {
+      "inputFilePath": "@{body('Get_file_content')}"
+    }
+  }
+}

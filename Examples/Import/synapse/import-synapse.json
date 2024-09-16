@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.Synapse/workspaces",
+      "apiVersion": "2020-12-01",
+      "name": "[parameters('synapseWorkspaceName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "defaultDataLakeStorage": {
+          "accountUrl": "[parameters('datalakeUrl')]"
+        }
+      }
+    }
+  ],
+  "parameters": {
+    "synapseWorkspaceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of Synapse Workspace"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "East US",
+      "metadata": {
+        "description": "Location of Synapse Workspace"
+      }
+    },
+    "datalakeUrl": {
+      "type": "string",
+      "metadata": {
+        "description": "Data Lake URL"
+      }
+    }
+  }
+}

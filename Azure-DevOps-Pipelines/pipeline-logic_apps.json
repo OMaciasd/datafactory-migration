@@ -1,0 +1,7 @@
+{
+  "referencePipelineRunId": "pipelineRunId",
+  "isRecovery": false,
+  "parameters": {
+    "inputFilePath": "@{triggerOutputs()?['headers']['x-ms-file-last-modified']}"
+  }
+}

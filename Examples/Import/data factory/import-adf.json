@@ -1,0 +1,74 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.DataFactory/factories",
+      "apiVersion": "2018-06-01",
+      "name": "[parameters('dataFactoryName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "createTime": "[utcNow()]"
+      },
+      "resources": [
+        {
+          "type": "pipelines",
+          "apiVersion": "2018-06-01",
+          "name": "[parameters('pipelineName')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName'))]"
+          ],
+          "properties": {
+            "activities": [
+              {
+                "name": "CopyActivity",
+                "type": "Copy",
+                "inputs": [
+                  {
+                    "referenceName": "SourceDataset",
+                    "type": "DatasetReference"
+                  }
+                ],
+                "outputs": [
+                  {
+                    "referenceName": "SinkDataset",
+                    "type": "DatasetReference"
+                  }
+                ],
+                "typeProperties": {
+                  "source": {
+                    "type": "BlobSource"
+                  },
+                  "sink": {
+                    "type": "SqlSink"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "parameters": {
+    "dataFactoryName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Data Factory"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "East US",
+      "metadata": {
+        "description": "Location of the Data Factory"
+      }
+    },
+    "pipelineName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Data Factory pipeline"
+      }
+    }
+  }
+}

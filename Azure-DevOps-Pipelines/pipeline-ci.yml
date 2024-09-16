@@ -1,0 +1,89 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- stage: BuildAndValidate
+  displayName: 'Compilar y Validar ADF'
+  jobs:
+  - job: ValidateADF
+    displayName: 'Validar Pipelines de ADF'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+
+    - script: |
+        pip install -r requirements.txt
+        python validate_adf.py  # Script personalizado para validar los pipelines ADF
+      displayName: 'Validación de ADF'
+
+- stage: UnitTests
+  displayName: 'Pruebas Unitarias ADF'
+  jobs:
+  - job: RunUnitTests
+    displayName: 'Ejecutar Pruebas Unitarias'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+
+    - script: |
+        pip install -r requirements.txt
+        python run_unit_tests.py  # Ejecutar las pruebas unitarias
+      displayName: 'Ejecutar Pruebas Unitarias de ADF'
+
+- stage: IntegrationTests
+  displayName: 'Pruebas de Integración ADF'
+  jobs:
+  - job: RunIntegrationTests
+    displayName: 'Ejecutar Pruebas de Integración'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+
+    - script: |
+        pip install -r requirements.txt
+        python run_integration_tests.py  # Ejecutar las pruebas de integración
+      displayName: 'Ejecutar Pruebas de Integración'
+
+- stage: RegressionTests
+  displayName: 'Pruebas de Regresión ADF'
+  jobs:
+  - job: RunRegressionTests
+    displayName: 'Ejecutar Pruebas de Regresión'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+
+    - script: |
+        pip install -r requirements.txt
+        python run_regression_tests.py  # Ejecutar las pruebas de regresión
+      displayName: 'Ejecutar Pruebas de Regresión'
+
+- stage: SecurityTests
+  displayName: 'Pruebas de Seguridad ADF'
+  jobs:
+  - job: RunSecurityTests
+    displayName: 'Ejecutar Pruebas de Seguridad'
+    steps:
+    - task: OWASPZAP@1
+      inputs:
+        targetUrl: 'https://my-adf-api-endpoint.com' # URL del endpoint ADF a probar
+        generateReport: true
+      displayName: 'Escaneo de Seguridad con OWASP ZAP'
+
+- stage: LoadTests
+  displayName: 'Pruebas de Carga ADF'
+  jobs:
+  - job: RunLoadTests
+    displayName: 'Ejecutar Pruebas de Carga'
+    steps:
+    - script: |
+        # Aquí puedes integrar JMeter para pruebas de carga
+        ./jmeter -n -t load_test.jmx -l results.jtl
+      displayName: 'Ejecutar Pruebas de Carga'
