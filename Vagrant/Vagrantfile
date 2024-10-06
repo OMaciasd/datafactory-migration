@@ -1,0 +1,34 @@
+Vagrant.configure("2") do |config|
+  config.vm.boot_timeout = 3600  # Aumentar a 60 minutos
+
+  (1..2).each do |i|
+    config.vm.define "sql_server_#{i}" do |vm|
+      vm.vm.box = "gusztavvargadr/windows-10"
+      vm.vm.network "private_network", ip: "192.168.33.#{100 + i}"
+
+      vm.vm.provider "virtualbox" do |vb|
+        vb.memory = "4096"
+        vb.cpus = 2
+      end
+
+      # Cambiar los puertos para evitar conflicto, asignando puertos únicos
+      vm.vm.network "forwarded_port", guest: 3389, host: 53380 + i
+
+      # Configuración de WinRM
+      vm.winrm.username = "vagrant"
+      vm.winrm.password = "vagrant"
+      vm.winrm.timeout = 1800
+
+      # Provisión para instalar SQL Server y habilitar RDP
+      vm.vm.provision "shell", inline: <<-SHELL
+        Invoke-WebRequest -Uri 'https://download.microsoft.com/download/4/1/b/41b9a8c3-c2b4-4fcc-a3d5-62feed9e6885/SQL2022-SSEI-Eval.exe?culture=es-mx&country=mx' -OutFile 'C:\\sql_server_setup.exe'
+        $arguments = "/QS /ACTION=Install /FEATURES=SQL /INSTANCENAME=SQLEXPRESS /TCPENABLED=1 /NPENABLED=0 /SQLSVCACCOUNT=`'NT AUTHORITY\\SYSTEM`' /SQLSYSADMINACCOUNTS=`'BUILTIN\\Administrators`' /AGTSVCACCOUNT=`'NT AUTHORITY\\SYSTEM`' /SECURITYMODE=SQL /SAPWD=`'YourStrongPassword123!`' /UPDATEENABLED=false /IAcceptSQLServerLicenseTerms /SkipRules=RebootRequiredCheck"
+        Start-Process -FilePath 'C:\\sql_server_setup.exe' -ArgumentList $arguments -Wait -Verb RunAs
+
+        # Habilitar RDP
+        Set-ItemProperty -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server' -Name "fDenyTSConnections" -Value 0
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+      SHELL
+    end
+  end
+end
